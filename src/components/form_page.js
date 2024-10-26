@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import useFormStore from "../stateManagementController/zustland_hook";
 import FormField from "./form_field";
-
+import "./form_page.css";
 function FormPage({ config }) {
   const currentPage = useFormStore((state) => state.currentPage);
   const nextPage = useFormStore((state) => state.nextPage);
@@ -68,13 +68,15 @@ function FormPage({ config }) {
   };
 
   return (
-    <div>
+    <div className="formPage">
       <h2>{page.title}</h2>
       {page.fields.map((field) => (
         <div key={field.name}>
           <FormField key={field.name} field={field} />
           {errors[field.name] && (
-            <p style={{ color: "red" }}>{errors[field.name]}</p>
+            <p className="error-message" style={{ color: "red" }}>
+              {errors[field.name]}
+            </p>
           )}
         </div>
       ))}

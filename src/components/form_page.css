@@ -1,0 +1,40 @@
+/* FormPage.css */
+
+.formPage {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formPage h2 {
+  color: #6366f1;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.formPage button {
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s;
+}
+
+.formPage button:hover {
+  background-color: #4f51c7;
+}
+
+.formPage button:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #e53e3e;
+  font-size: 0.9em;
+  margin-top: 5px;
+}

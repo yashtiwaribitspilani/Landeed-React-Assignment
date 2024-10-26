@@ -1,0 +1,46 @@
+/* FormField.css */
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.formField label {
+  color: #6366f1;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.formField input[type="text"],
+.formField input[type="number"],
+.formField select {
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  font-size: 1em;
+  color: #333;
+}
+
+.formField select {
+  appearance: none;
+}
+
+.formField input[type="text"]:focus,
+.formField input[type="number"]:focus,
+.formField select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.formField .custom-input {
+  margin-top: 8px;
+}
+
+.formField .error {
+  color: #e53e3e;
+  font-size: 0.9em;
+  margin-top: 5px;
+}

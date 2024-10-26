@@ -1,7 +1,7 @@
 // src/components/FormField.js
 import React from "react";
 import useFormStore from "../stateManagementController/zustland_hook";
-
+import "./form_field.css";
 function FormField({ field }) {
   const { name, label, type, options, allowCustomInput } = field;
   const setFormData = useFormStore((state) => state.setFormData);
@@ -12,7 +12,7 @@ function FormField({ field }) {
   };
 
   return (
-    <div>
+    <div className="formField">
       <label>{label}</label>
       {type === "text" && (
         <input
@@ -38,10 +38,11 @@ function FormField({ field }) {
           {allowCustomInput && <option value="custom">Custom</option>}
         </select>
       )}
-      {allowCustomInput && formData[name] === "custom" && (
+      {allowCustomInput && (
         <input
           type="text"
           placeholder="Enter custom value"
+          className="custom-input"
           onChange={(e) => setFormData(name, e.target.value)}
         />
       )}

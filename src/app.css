@@ -1,0 +1,44 @@
+/* App.css */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f6ff; /* Light background */
+  color: #333;
+}
+.loader {
+  position: fixed; /* Fix position to cover the whole screen */
+  top: 50%; /* Move down 50% of the viewport height */
+  left: 50%; /* Move right 50% of the viewport width */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Offset by half the loader's width and height */
+  z-index: 9999; /* Ensure loader is above all other content */
+}
+.App {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.content {
+  width: 100%;
+  max-width: 600px;
+  background-color: white;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.timer {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.timer h2 {
+  color: #6366f1;
+  font-size: 1.2em;
+  font-weight: bold;
+}
