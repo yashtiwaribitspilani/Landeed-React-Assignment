@@ -24,7 +24,7 @@
 }
 
 .formField select {
-  appearance: none;
+  appearance: menulist;
 }
 
 .formField input[type="text"]:focus,

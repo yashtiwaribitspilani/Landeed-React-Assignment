@@ -1,13 +1,18 @@
 // src/components/FormField.js
-import React from "react";
+import React, { useState } from "react";
 import useFormStore from "../stateManagementController/zustland_hook";
 import "./form_field.css";
 function FormField({ field }) {
   const { name, label, type, options, allowCustomInput } = field;
   const setFormData = useFormStore((state) => state.setFormData);
   const formData = useFormStore((state) => state.formData);
-
+  const [isCustomInput, setCustomInput] = useState(false);
   const handleChange = (event) => {
+    if (event.target.value === "custom") {
+      setCustomInput(true);
+    } else {
+      setCustomInput(false);
+    }
     setFormData(name, event.target.value);
   };
 
@@ -29,7 +34,13 @@ function FormField({ field }) {
         />
       )}
       {type === "select" && (
-        <select value={formData[name] || ""} onChange={handleChange}>
+        <select
+          value={isCustomInput ? "custom" : formData[name] || ""}
+          onChange={handleChange}
+        >
+          <option value="" disabled>
+            {label}
+          </option>
           {options.map((option) => (
             <option key={option} value={option}>
               {option}
@@ -38,12 +49,14 @@ function FormField({ field }) {
           {allowCustomInput && <option value="custom">Custom</option>}
         </select>
       )}
-      {allowCustomInput && (
+      {allowCustomInput && isCustomInput && (
         <input
           type="text"
           placeholder="Enter custom value"
           className="custom-input"
-          onChange={(e) => setFormData(name, e.target.value)}
+          onChange={(e) => {
+            setFormData(name, e.target.value);
+          }}
         />
       )}
     </div>
