@@ -20,12 +20,12 @@ const useFormStore = create((set, get) => ({
       timeoutDuration: config.formConfig.timeout,
     });
 
-    const timeoutId = setTimeout(() => {
-      console.log("PRINTING AFTER 30 seconds");
-      get().resetForm();
-      set({ currentPage: 0 });
-    }, config.formConfig.timeout * 1000);
-    set({ timeoutId });
+    // const timeoutId = setTimeout(() => {
+    //   console.log("PRINTING AFTER 30 seconds");
+    //   get().resetForm();
+    //   set({ currentPage: 0 });
+    // }, config.formConfig.timeout * 1000);
+    // set({ timeoutId });
   },
 
   setFormData: (field, value) => {

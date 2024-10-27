@@ -32,9 +32,12 @@ function FormPage({ config }) {
 
   // Function to validate a single field
   const validateField = (value, field) => {
-    const { name, label, validation, required } = field;
+    const { name, label, validation, required, allowMultiple } = field;
     if (required && !value) {
       return `${label} is required`;
+    }
+    if (allowMultiple != null && allowMultiple === true) {
+      return "";
     }
     if (validation) {
       if (validation.type === "string" && typeof value !== "string") {
