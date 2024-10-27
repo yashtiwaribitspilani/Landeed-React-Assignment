@@ -4,13 +4,16 @@ import useFormStore from "./stateManagementController/zustland_hook";
 import FormPage from "./components/form_page";
 import "./app.css";
 import { ThreeDots } from "react-loader-spinner";
-
+import FormSuccess from "./components/form_success";
 function App() {
   const [config, setConfig] = useState(null);
   const initializeForm = useFormStore((state) => state.initializeForm);
   const [remainingTime, setRemainingTime] = useState(0);
   const resetForm = useFormStore((state) => state.resetForm);
+  const [isLoading, setLoading] = useState(true);
+  const isSubmitted = useFormStore((state) => state.isSubmitted);
   useEffect(() => {
+    setLoading(true);
     // Function to fetch form configuration
     const fetchFormConfig = async () => {
       console.log("USE EFFECT CALLED");
@@ -31,6 +34,7 @@ function App() {
         setConfig(configData);
         initializeForm(configData); // Parse JSON from the response
         setRemainingTime(configData.formConfig.timeout);
+        setLoading(false);
         console.log("Form Configuration:", configData);
         // You can now use configData in your application
       } catch (error) {
@@ -40,116 +44,6 @@ function App() {
 
     // Call the fetch function
     fetchFormConfig();
-    // setConfig({
-    //   formConfig: {
-    //     timeout: 30, // Timeout in seconds (30 minutes)
-    //     pages: [
-    //       {
-    //         title: "Page 1",
-    //         fields: [
-    //           {
-    //             name: "name",
-    //             label: "Name",
-    //             type: "text",
-    //             required: true,
-    //             validation: { type: "string" },
-    //           },
-    //           {
-    //             name: "gender",
-    //             label: "Gender",
-    //             type: "select",
-    //             required: true,
-    //             options: ["M", "F", "Nonbinary"],
-    //             validation: { type: "string" },
-    //           },
-    //           {
-    //             name: "age",
-    //             label: "Age",
-    //             type: "number",
-    //             required: true,
-    //             validation: { type: "number", min: 0 },
-    //           },
-    //         ],
-    //       },
-    //       {
-    //         title: "Page 2",
-    //         fields: [
-    //           {
-    //             name: "profession",
-    //             label: "Profession",
-    //             type: "select",
-    //             required: true,
-    //             options: ["Owner", "Agent", "Buyer", "Seller"],
-    //             allowCustomInput: true,
-    //             validation: { type: "string" },
-    //           },
-    //           {
-    //             name: "services",
-    //             label: "What services do you need?",
-    //             type: "text",
-    //             required: false,
-    //             validation: { type: "string" },
-    //           },
-    //         ],
-    //       },
-    //     ],
-    //   },
-    // });
-    // initializeForm({
-    //   formConfig: {
-    //     timeout: 30, // Timeout in seconds (30 minutes)
-    //     pages: [
-    //       {
-    //         title: "Page 1",
-    //         fields: [
-    //           {
-    //             name: "name",
-    //             label: "Name",
-    //             type: "text",
-    //             required: true,
-    //             validation: { type: "string" },
-    //           },
-    //           {
-    //             name: "gender",
-    //             label: "Gender",
-    //             type: "select",
-    //             required: true,
-    //             options: ["M", "F", "Nonbinary"],
-    //             validation: { type: "string" },
-    //           },
-    //           {
-    //             name: "age",
-    //             label: "Age",
-    //             type: "number",
-    //             required: true,
-    //             validation: { type: "number", min: 0 },
-    //           },
-    //         ],
-    //       },
-    //       {
-    //         title: "Page 2",
-    //         fields: [
-    //           {
-    //             name: "profession",
-    //             label: "Profession",
-    //             type: "select",
-    //             required: true,
-    //             options: ["Owner", "Agent", "Buyer", "Seller"],
-    //             allowCustomInput: true,
-    //             validation: { type: "string" },
-    //           },
-    //           {
-    //             name: "services",
-    //             label: "What services do you need?",
-    //             type: "text",
-    //             required: false,
-    //             validation: { type: "string" },
-    //           },
-    //         ],
-    //       },
-    //     ],
-    //   },
-    // });
   }, [initializeForm]);
   // useEffect(() => {
   //   // Only set remaining time when config is available
@@ -188,7 +82,7 @@ function App() {
     )}`;
   };
 
-  if (!config)
+  if (isLoading)
     return (
       <div className="loader">
         <ThreeDots
@@ -203,20 +97,21 @@ function App() {
         />
       </div>
     );
+  if (config != null && !isLoading && !isSubmitted)
+    return (
+      <div className="App">
+        <div className="content">
+          {/* Display remaining time at the top of the page */}
+          <div className="timer">
+            <h2>Time Remaining: {formatTime(remainingTime)}</h2>
+          </div>
 
-  return (
-    <div className="App">
-      <div className="content">
-        {/* Display remaining time at the top of the page */}
-        <div className="timer">
-          <h2>Time Remaining: {formatTime(remainingTime)}</h2>
+          {/* Render the form pages */}
+          <FormPage config={config} />
         </div>
-
-        {/* Render the form pages */}
-        <FormPage config={config} />
       </div>
-    </div>
-  );
+    );
+  if (isSubmitted) return <FormSuccess></FormSuccess>;
 }
 
 export default App;

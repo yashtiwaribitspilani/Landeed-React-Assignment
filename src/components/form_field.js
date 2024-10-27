@@ -8,6 +8,7 @@ function FormField({ field }) {
   const formData = useFormStore((state) => state.formData);
   const [isCustomInput, setCustomInput] = useState(false);
   const handleChange = (event) => {
+    console.log(`HERE IS THE EVENT VALUE => ${event.target.value}`);
     if (event.target.value === "custom") {
       setCustomInput(true);
     } else {

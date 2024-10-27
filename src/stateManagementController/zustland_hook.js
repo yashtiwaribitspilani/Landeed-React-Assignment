@@ -2,6 +2,7 @@
 import { create } from "zustand";
 
 const useFormStore = create((set, get) => ({
+  isSubmitted: false,
   formData: {},
   currentPage: 0,
   timeoutDuration: null,
@@ -20,7 +21,7 @@ const useFormStore = create((set, get) => ({
     });
 
     const timeoutId = setTimeout(() => {
-      console.log("PRINTING AFTER 5 seconds");
+      console.log("PRINTING AFTER 30 seconds");
       get().resetForm();
       set({ currentPage: 0 });
     }, config.formConfig.timeout * 1000);
@@ -50,17 +51,20 @@ const useFormStore = create((set, get) => ({
   submitForm: async () => {
     const { formData } = get();
     console.log(formData);
-    // const response = await fetch("/api/submit", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(formData),
-    // });
-    // if (response.ok) {
-    //   alert("Form submitted successfully!");
-    //   get().resetForm();
-    // } else {
-    //   alert("Form submission failed.");
-    // }
+    const response = await fetch(
+      "https://landeedbackend.onrender.com/api/submitForm",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: formData }),
+      }
+    );
+    if (response.ok) {
+      set({ isSubmitted: true });
+      get().resetForm();
+    } else {
+      alert("Form submission failed.");
+    }
   },
 }));
 
