@@ -52,6 +52,12 @@ function FormPage({ config }) {
       if (validation.type === "string" && typeof value !== "string") {
         return `${label} must be a string`;
       }
+      if (validation.type === "string" && value.length < validation.min) {
+        return `${label} must be at least ${validation.min} characters long`;
+      }
+      if (validation.type === "string" && value.length > validation.max) {
+        return `${label} cannot be more than ${validation.max} characters long`;
+      }
       if (validation.type === "number") {
         const numValue = Number(value);
         if (isNaN(numValue)) {
