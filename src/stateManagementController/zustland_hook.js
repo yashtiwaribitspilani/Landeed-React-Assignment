@@ -1,6 +1,6 @@
 // src/store/useFormStore.js
 import { create } from "zustand";
-
+import { submitForm } from "../networkController/network_service";
 const useFormStore = create((set, get) => ({
   isSubmitted: false,
   formData: {},
@@ -57,14 +57,7 @@ const useFormStore = create((set, get) => ({
     const { formData } = get();
     set({ isLoadingGlobal: true });
     console.log(formData);
-    const response = await fetch(
-      "https://landeedbackend.onrender.com/api/submitForm",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data: formData }),
-      }
-    );
+    const response = await submitForm(formData);
     if (response.ok) {
       set({ isSubmitted: true });
       get().resetForm();

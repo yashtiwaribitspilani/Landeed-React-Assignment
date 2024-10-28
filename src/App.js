@@ -5,6 +5,7 @@ import FormPage from "./components/form_page";
 import "./app.css";
 import { ThreeDots } from "react-loader-spinner";
 import FormSuccess from "./components/form_success";
+import { fetchFormConfig } from "./networkController/network_service";
 function App() {
   const [config, setConfig] = useState(null);
   const initializeForm = useFormStore((state) => state.initializeForm);
@@ -16,36 +17,23 @@ function App() {
   useEffect(() => {
     setLoadingState(true);
     // Function to fetch form configuration
-    const fetchFormConfig = async () => {
-      console.log("USE EFFECT CALLED");
+
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://landeedbackend.onrender.com/api/formConfig"
-        );
-
-        // Check if the response is okay (status in the range 200-299)
-        if (!response.ok) {
-          throw new Error(
-            `Network response was not ok: ${response.statusText}`
-          );
-        }
-
-        const configData = await response.json();
-
-        setConfig(configData);
-        initializeForm(configData); // Parse JSON from the response
-        setRemainingTime(configData.formConfig.timeout);
+        const data = await fetchFormConfig();
+        setConfig(data);
+        initializeForm(data);
+        setRemainingTime(data.formConfig.timeout);
         setLoadingState(false);
-        console.log("Form Configuration:", configData);
-        // You can now use configData in your application
+        console.log("Form Configuration:", data);
       } catch (error) {
-        console.error("Fetch error:", error); // Handle errors
+        console.error("Error fetching form config:", error);
       }
     };
 
-    // Call the fetch function
-    fetchFormConfig();
+    fetchData();
   }, [initializeForm]);
+
   // useEffect(() => {
   //   // Only set remaining time when config is available
   //   if (config) {
