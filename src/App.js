@@ -10,10 +10,11 @@ function App() {
   const initializeForm = useFormStore((state) => state.initializeForm);
   const [remainingTime, setRemainingTime] = useState(0);
   const resetForm = useFormStore((state) => state.resetForm);
-  const [isLoading, setLoading] = useState(true);
+  const isLoading = useFormStore((state) => state.isLoadingGlobal);
+  const setLoadingState = useFormStore((state) => state.setLoadingData);
   const isSubmitted = useFormStore((state) => state.isSubmitted);
   useEffect(() => {
-    setLoading(true);
+    setLoadingState(true);
     // Function to fetch form configuration
     const fetchFormConfig = async () => {
       console.log("USE EFFECT CALLED");
@@ -34,7 +35,7 @@ function App() {
         setConfig(configData);
         initializeForm(configData); // Parse JSON from the response
         setRemainingTime(configData.formConfig.timeout);
-        setLoading(false);
+        setLoadingState(false);
         console.log("Form Configuration:", configData);
         // You can now use configData in your application
       } catch (error) {

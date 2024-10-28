@@ -7,7 +7,7 @@ const useFormStore = create((set, get) => ({
   currentPage: 0,
   timeoutDuration: null,
   timeoutId: null,
-
+  isLoadingGlobal: false,
   initializeForm: (config) => {
     // Clear any existing timeout to avoid memory leaks
     const existingTimeoutId = get().timeoutId;
@@ -33,6 +33,11 @@ const useFormStore = create((set, get) => ({
       formData: { ...state.formData, [field]: value },
     }));
   },
+  setLoadingData: (loadingState) => {
+    set((state) => ({
+      isLoadingGlobal: loadingState,
+    }));
+  },
   getFormData: async () => {
     const { formData } = get();
     // If a specific field is requested, return its value
@@ -50,6 +55,7 @@ const useFormStore = create((set, get) => ({
 
   submitForm: async () => {
     const { formData } = get();
+    set({ isLoadingGlobal: true });
     console.log(formData);
     const response = await fetch(
       "https://landeedbackend.onrender.com/api/submitForm",
@@ -62,8 +68,10 @@ const useFormStore = create((set, get) => ({
     if (response.ok) {
       set({ isSubmitted: true });
       get().resetForm();
+      set({ isLoadingGlobal: false });
     } else {
       alert("Form submission failed.");
+      set({ isLoadingGlobal: false });
     }
   },
 }));
