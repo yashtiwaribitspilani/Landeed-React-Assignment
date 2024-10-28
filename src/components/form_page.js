@@ -36,6 +36,15 @@ function FormPage({ config }) {
     if (required && !value) {
       return `${label} is required`;
     }
+    console.log(Object.keys(value).length);
+    if (
+      allowMultiple != null &&
+      allowMultiple === true &&
+      Object.keys(value).length === 0
+    ) {
+      console.log("COMING INSIDE HERE");
+      return `${label} is required`;
+    }
     if (allowMultiple != null && allowMultiple === true) {
       return "";
     }
